@@ -1,0 +1,20 @@
+WITH combined AS (
+    SELECT MIN(w.coins_needed) AS min_coins_needed,w.power,p.age FROM Wands AS w
+    INNER JOIN Wands_Property as p
+    ON w.code=p.code
+    WHERE p.is_evil=0
+    GROUP BY w.power,p.age ),
+    
+joined_tables AS (
+    SELECT w.id,w.coins_needed,w.power,p.age FROM Wands AS w
+    INNER JOIN Wands_Property as p
+    ON w.code=p.code
+    WHERE p.is_evil=0
+)
+    
+SELECT j.id,j.age,j.coins_needed,j.power FROM joined_tables AS j
+INNER JOIN combined AS c
+ON j.age = c.age
+AND j.coins_needed = c.min_coins_needed
+AND j.power = c.power
+ORDER BY j.power DESC, j.age DESC;
