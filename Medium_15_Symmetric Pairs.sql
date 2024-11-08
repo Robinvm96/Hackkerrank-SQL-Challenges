@@ -1,0 +1,11 @@
+WITH combined AS (
+
+SELECT LEAST(t1.X,t1.Y) AS X,GREATEST(t1.X,t1.Y) AS Y, COUNT(t1.X) AS cnt FROM Functions AS t1
+INNER JOIN Functions AS t2
+ON t1.X = t2.Y
+AND t2.X = t1.Y
+GROUP BY LEAST(t1.X,t1.Y),GREATEST(t1.X,t1.Y)
+HAVING COUNT(t1.X)>1)
+
+SELECT X,Y FROM combined
+ORDER BY X,Y;
